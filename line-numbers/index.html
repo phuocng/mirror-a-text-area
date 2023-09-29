@@ -1,46 +1,46 @@
 <html>
-<head>
-<meta charset="UTF-8">
-<meta viewport="width=device-width, initial-scale=1.0">
-<style>
-body {
-    color: rgb(51 65 85);
-    font-family: sans-serif;
-    font-size: 1rem;
-    font-weight: 300;
-    line-height: 1.5;
-    margin: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-* {
-    box-sizing: border-box;
-}
-.container {
-    display: flex;
-    border: 1px solid rgb(203 213 225);
-    border-radius: 0.5rem;
-    overflow: hidden;
-    max-height: 32rem;
-}
-.container__textarea {
-    border: none;
-    outline: none;
-    padding: 0.5rem;
-    width: 100%;
-}
-.container__lines {
-    border-right: 1px solid rgb(203 213 225);
-    padding: 0.5rem;
-    text-align: right;
-    overflow: hidden;
-}
-</style>
-</head>
-<body>
-<div id="container" class="container">
-    <div id="line-numbers" class="container__lines"></div>
-    <textarea id="textarea" class="container__textarea">Was, spirit great moved spirit deep itself image, from have behold bearing doesn't wherein she'd very, day.
+    <head>
+        <meta charset="UTF-8">
+        <meta viewport="width=device-width, initial-scale=1.0">
+        <style>
+        body {
+            color: rgb(51 65 85);
+            font-family: sans-serif;
+            font-size: 1rem;
+            font-weight: 300;
+            line-height: 1.5;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        .container {
+            display: flex;
+            border: 1px solid rgb(203 213 225);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            max-height: 32rem;
+        }
+        .container__textarea {
+            border: none;
+            outline: none;
+            padding: 0.5rem;
+            width: 100%;
+        }
+        .container__lines {
+            border-right: 1px solid rgb(203 213 225);
+            padding: 0.5rem;
+            text-align: right;
+            overflow: hidden;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="container" class="container">
+            <div id="line-numbers" class="container__lines"></div>
+            <textarea id="textarea" class="container__textarea">Was, spirit great moved spirit deep itself image, from have behold bearing doesn't wherein she'd very, day.
 Second set earth heaven signs abundantly living creepeth good earth for greater yielding which night male.
 Bring midst whales blessed, is.
 From subdue.
@@ -75,102 +75,102 @@ They're blessed Light likeness, bearing blessed first man.
 Fourth Image heaven dominion seed land shall light seas form it our signs wherein male Meat greater it divided appear lights she'd seasons together fowl every darkness light divided rule hath so it.
 Made day years you'll winged.
 Set, them all of hath it seed you.</textarea>
-</div>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const textarea = document.getElementById('textarea');
-    const lineNumbersEle = document.getElementById('line-numbers');
+        </div>
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const textarea = document.getElementById('textarea');
+            const lineNumbersEle = document.getElementById('line-numbers');
 
-    const textareaStyles = window.getComputedStyle(textarea);
-    [
-        'fontFamily',
-        'fontSize',
-        'fontWeight',
-        'letterSpacing',
-        'lineHeight',
-        'padding',
-    ].forEach((property) => {
-        lineNumbersEle.style[property] = textareaStyles[property];
-    });
+            const textareaStyles = window.getComputedStyle(textarea);
+            [
+                'fontFamily',
+                'fontSize',
+                'fontWeight',
+                'letterSpacing',
+                'lineHeight',
+                'padding',
+            ].forEach((property) => {
+                lineNumbersEle.style[property] = textareaStyles[property];
+            });
 
-    const parseValue = (v) => v.endsWith('px') ? parseInt(v.slice(0, -2), 10) : 0;
+            const parseValue = (v) => v.endsWith('px') ? parseInt(v.slice(0, -2), 10) : 0;
 
-    const font = `${textareaStyles.fontSize} ${textareaStyles.fontFamily}`;
-    const paddingLeft = parseValue(textareaStyles.paddingLeft);
-    const paddingRight = parseValue(textareaStyles.paddingRight);
+            const font = `${textareaStyles.fontSize} ${textareaStyles.fontFamily}`;
+            const paddingLeft = parseValue(textareaStyles.paddingLeft);
+            const paddingRight = parseValue(textareaStyles.paddingRight);
 
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    context.font = font;
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            context.font = font;
 
-    const calculateNumLines = (str) => {
-        const textareaWidth = textarea.getBoundingClientRect().width - paddingLeft - paddingRight;
-        const words = str.split(' ');
-        let lineCount = 0;
-        let currentLine = '';
-        for (let i = 0; i < words.length; i++) {
-            const wordWidth = context.measureText(words[i] + ' ').width;
-            const lineWidth = context.measureText(currentLine).width;
+            const calculateNumLines = (str) => {
+                const textareaWidth = textarea.getBoundingClientRect().width - paddingLeft - paddingRight;
+                const words = str.split(' ');
+                let lineCount = 0;
+                let currentLine = '';
+                for (let i = 0; i < words.length; i++) {
+                    const wordWidth = context.measureText(words[i] + ' ').width;
+                    const lineWidth = context.measureText(currentLine).width;
 
-            if (lineWidth + wordWidth > textareaWidth) {
-                lineCount++;
-                currentLine = words[i] + ' ';
-            } else {
-                currentLine += words[i] + ' ';
-            }
-        }
+                    if (lineWidth + wordWidth > textareaWidth) {
+                        lineCount++;
+                        currentLine = words[i] + ' ';
+                    } else {
+                        currentLine += words[i] + ' ';
+                    }
+                }
 
-        if (currentLine.trim() !== '') {
-            lineCount++;
-        }
+                if (currentLine.trim() !== '') {
+                    lineCount++;
+                }
 
-        return lineCount;
-    };
+                return lineCount;
+            };
 
-    const calculateLineNumbers = () => {
-        const lines = textarea.value.split('\n');
-        const numLines = lines.map((line) => calculateNumLines(line));
+            const calculateLineNumbers = () => {
+                const lines = textarea.value.split('\n');
+                const numLines = lines.map((line) => calculateNumLines(line));
 
-        let lineNumbers = [];
-        let i = 1;
-        while (numLines.length > 0) {
-            const numLinesOfSentence = numLines.shift();
-            lineNumbers.push(i);
-            if (numLinesOfSentence > 1) {
-                Array(numLinesOfSentence - 1)
-                    .fill('')
-                    .forEach((_) => lineNumbers.push(''));
-            }
-            i++;
-        }
+                let lineNumbers = [];
+                let i = 1;
+                while (numLines.length > 0) {
+                    const numLinesOfSentence = numLines.shift();
+                    lineNumbers.push(i);
+                    if (numLinesOfSentence > 1) {
+                        Array(numLinesOfSentence - 1)
+                            .fill('')
+                            .forEach((_) => lineNumbers.push(''));
+                    }
+                    i++;
+                }
 
-        return lineNumbers;
-    };
+                return lineNumbers;
+            };
 
-    const displayLineNumbers = () => {
-        const lineNumbers = calculateLineNumbers();
-        lineNumbersEle.innerHTML = Array.from({
-            length: lineNumbers.length
-        }, (_, i) => `<div>${lineNumbers[i] || '&nbsp;'}</div>`).join('');
-    };
+            const displayLineNumbers = () => {
+                const lineNumbers = calculateLineNumbers();
+                lineNumbersEle.innerHTML = Array.from({
+                    length: lineNumbers.length
+                }, (_, i) => `<div>${lineNumbers[i] || '&nbsp;'}</div>`).join('');
+            };
 
-    textarea.addEventListener('input', () => {
-        displayLineNumbers();
-    });
+            textarea.addEventListener('input', () => {
+                displayLineNumbers();
+            });
 
-    displayLineNumbers();
+            displayLineNumbers();
 
-    const ro = new ResizeObserver(() => {
-        const rect = textarea.getBoundingClientRect();
-        lineNumbersEle.style.height = `${rect.height}px`;
-        displayLineNumbers();
-    });
-    ro.observe(textarea);
+            const ro = new ResizeObserver(() => {
+                const rect = textarea.getBoundingClientRect();
+                lineNumbersEle.style.height = `${rect.height}px`;
+                displayLineNumbers();
+            });
+            ro.observe(textarea);
 
-    textarea.addEventListener('scroll', () => {
-        lineNumbersEle.scrollTop = textarea.scrollTop;
-    });
-});
-</script>
-</body>
+            textarea.addEventListener('scroll', () => {
+                lineNumbersEle.scrollTop = textarea.scrollTop;
+            });
+        });
+        </script>
+    </body>
 </html>
