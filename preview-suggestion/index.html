@@ -1,0 +1,190 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta viewport="width=device-width, initial-scale=1.0">
+        <style>
+        body {
+            color: rgb(51 65 85);
+            font-family: sans-serif;
+            font-size: 1rem;
+            font-weight: 300;
+            line-height: 1.5;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        .container {
+            position: relative;
+        }
+        .container__textarea {
+            background: transparent;
+            position: relative;
+        }
+        .container__mirror {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+        .container__pre-cursor {
+            color: transparent;
+        }
+        .container__post-cursor {
+            opacity: 0.4;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="container" id="container">
+            <textarea id="textarea" class="container__textarea"></textarea>
+        </div>
+        <script>
+        const suggestions = [
+            "You're the best.",
+            "I'm humbled and grateful.",
+            "You knocked me off my feet!",
+            "My heart is still smiling.",
+            "Your thoughtfulness is a gift I will always treasure.",
+            "Sometimes the simplest things mean the most.",
+            "The banana bread was fabulous. You made my day.",
+            "I'm touched beyond words.",
+            "All I can say is wow! (Except, of course, I'm grateful.)",
+            "My heart just keeps thanking you and thanking you.",
+            "You're a blessing to me.",
+            "Thank you for being my angel.",
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const containerEle = document.getElementById('container');
+            const textarea = document.getElementById('textarea');
+
+            const mirroredEle = document.createElement('div');
+            mirroredEle.textContent = textarea.value;
+            mirroredEle.classList.add('container__mirror');
+            containerEle.prepend(mirroredEle);
+
+            const textareaStyles = window.getComputedStyle(textarea);
+            [
+                'border',
+                'boxSizing',
+                'fontFamily',
+                'fontSize',
+                'fontWeight',
+                'letterSpacing',
+                'lineHeight',
+                'padding',
+                'textDecoration',
+                'textIndent',
+                'textTransform',
+                'whiteSpace',
+                'wordSpacing',
+                'wordWrap',
+            ].forEach((property) => {
+                mirroredEle.style[property] = textareaStyles[property];
+            });
+            mirroredEle.style.borderColor = 'transparent';
+
+            const parseValue = (v) => v.endsWith('px') ? parseInt(v.slice(0, -2), 10) : 0;
+            const borderWidth = parseValue(textareaStyles.borderWidth);
+
+            const ro = new ResizeObserver(() => {
+                mirroredEle.style.width = `${textarea.clientWidth + 2 * borderWidth}px`;
+                mirroredEle.style.height = `${textarea.clientHeight + 2 * borderWidth}px`;
+            });
+            ro.observe(textarea);
+
+            textarea.addEventListener('scroll', () => {
+                mirroredEle.scrollTop = textarea.scrollTop;
+            });
+
+            const findIndexOfCurrentWord = () => {
+                // Get current value and cursor position
+                const currentValue = textarea.value;
+                const cursorPos = textarea.selectionStart;
+
+                // Iterate backwards through characters until we find a space or newline character
+                let startIndex = cursorPos - 1;
+                while (startIndex >= 0 && !/\s/.test(currentValue[startIndex])) {
+                    startIndex--;
+                }
+                return startIndex;
+            };
+
+            // Replace current word with selected suggestion
+            const replaceCurrentWord = (newWord) => {
+                const currentValue = textarea.value;
+                const cursorPos = textarea.selectionStart;
+                const startIndex = findIndexOfCurrentWord();
+
+                const newValue = currentValue.substring(0, startIndex + 1) +
+                                newWord +
+                                currentValue.substring(cursorPos);
+                textarea.value = newValue;
+                textarea.focus();
+                textarea.selectionStart = textarea.selectionEnd = startIndex + 1 + newWord.length;
+            };
+
+            const hideSuggestion = () => {
+                mirroredEle.innerHTML = '';
+            };
+
+            textarea.addEventListener('input', () => {
+                const currentValue = textarea.value;
+                const cursorPos = textarea.selectionStart;
+                if (cursorPos !== currentValue.length) {
+                    hideSuggestion();
+                    return;
+                }
+
+                const startIndex = findIndexOfCurrentWord();
+
+                // Extract just the current word
+                const currentWord = currentValue.substring(startIndex + 1, cursorPos);
+                if (currentWord === '') {
+                    hideSuggestion();
+                    return;
+                }
+
+                const matches = suggestions.filter((suggestion) => suggestion.toLowerCase().indexOf(currentWord.toLowerCase()) > -1);
+                if (matches.length === 0) {
+                    hideSuggestion();
+                    return;
+                }
+
+                const textBeforeCursor = currentValue.substring(0, cursorPos);
+
+                const preCursorEle = document.createElement('span');
+                preCursorEle.textContent = textBeforeCursor;
+                preCursorEle.classList.add('container__pre-cursor');
+
+                const postCursorEle = document.createElement('span');
+                postCursorEle.classList.add('container__post-cursor');
+                postCursorEle.textContent = matches[0];
+
+                const caretEle = document.createElement('span');
+                caretEle.innerHTML = '&nbsp;';
+
+                mirroredEle.innerHTML = '';
+                mirroredEle.append(preCursorEle, caretEle, postCursorEle);
+            });
+
+            textarea.addEventListener('keydown', (e) => {
+                if (e.key !== 'Tab') {
+                    return;
+                }
+                const postCursorEle = mirroredEle.querySelector('.container__post-cursor');
+                if (postCursorEle.textContent !== '') {
+                    e.preventDefault();
+                    replaceCurrentWord(postCursorEle.textContent);
+                    hideSuggestion();
+                }
+            });
+        });
+        </script>
+    </body>
+</html>
