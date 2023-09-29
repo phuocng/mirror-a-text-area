@@ -16,19 +16,12 @@
         * {
             box-sizing: border-box;
         }
-        textarea {
-            border: 1px solid rgb(203 213 225);
-            border-radius: 0.5rem;
-            padding: 0.5rem;
-            width: 100%;
-            height: 40rem;
-        }
-
         .container {
             position: relative;
         }
         .container__textarea {
             background: transparent;
+            caret-color: transparent;
             position: relative;
         }
         .container__mirror {
@@ -39,6 +32,21 @@
             width: 100%;
             overflow: hidden;
             color: transparent;
+        }
+        .container__cursor {
+            animation: blink 1s infinite;
+            background-color: rgb(15 23 42);
+            position: absolute;
+            width: 4px;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                background-color: transparent;
+            }
+            50% {
+                background-color: rgb(15 23 42);
+            }
         }
         </style>
     </head>
@@ -93,6 +101,26 @@ Sixth let grass fruit wherein blessed lights, itself god replenish called made a
             textarea.addEventListener('scroll', () => {
                 mirroredEle.scrollTop = textarea.scrollTop;
             });
+
+            const handleSelectionChange = () => {
+                if (document.activeElement !== textarea) {
+                    return;
+                }
+                const cursorPos = textarea.selectionStart;
+                const textBeforeCursor = textarea.value.substring(0, cursorPos);
+                const textAfterCursor = textarea.value.substring(cursorPos);
+
+                const pre = document.createTextNode(textBeforeCursor);
+                const post = document.createTextNode(textAfterCursor);
+                const caretEle = document.createElement('span');
+                caretEle.classList.add('container__cursor');
+                caretEle.innerHTML = '&nbsp;';
+
+                mirroredEle.innerHTML = '';
+                mirroredEle.append(pre, caretEle, post);
+            };
+
+            document.addEventListener('selectionchange', handleSelectionChange);
         });
         </script>
     </body>

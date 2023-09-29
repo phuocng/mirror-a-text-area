@@ -16,14 +16,6 @@
         * {
             box-sizing: border-box;
         }
-        textarea {
-            border: 1px solid rgb(203 213 225);
-            border-radius: 0.5rem;
-            padding: 0.5rem;
-            width: 100%;
-            height: 40rem;
-        }
-
         .container {
             position: relative;
         }
@@ -31,7 +23,7 @@
             background: transparent;
             position: relative;
         }
-        .container__mirror {
+        .container__overlay {
             position: absolute;
             top: 0;
             left: 0;
@@ -39,6 +31,11 @@
             width: 100%;
             overflow: hidden;
             color: transparent;
+        }
+        .container__highlight {
+            background-color: rgb(199 210 254);
+            position: absolute;
+            width: 100%;
         }
         </style>
     </head>
@@ -55,10 +52,18 @@ Sixth let grass fruit wherein blessed lights, itself god replenish called made a
             const containerEle = document.getElementById('container');
             const textarea = document.getElementById('textarea');
 
+            const overlayEle = document.createElement('div');
+            overlayEle.classList.add('container__overlay');
+            containerEle.prepend(overlayEle);
+
+            const highlightEle = document.createElement('div');
+            highlightEle.classList.add('container__highlight');
+            overlayEle.appendChild(highlightEle);
+
             const mirroredEle = document.createElement('div');
             mirroredEle.textContent = textarea.value;
             mirroredEle.classList.add('container__mirror');
-            containerEle.prepend(mirroredEle);
+            overlayEle.appendChild(mirroredEle);
 
             const textareaStyles = window.getComputedStyle(textarea);
             [
@@ -69,7 +74,6 @@ Sixth let grass fruit wherein blessed lights, itself god replenish called made a
                 'fontWeight',
                 'letterSpacing',
                 'lineHeight',
-                'padding',
                 'textDecoration',
                 'textIndent',
                 'textTransform',
@@ -77,22 +81,46 @@ Sixth let grass fruit wherein blessed lights, itself god replenish called made a
                 'wordSpacing',
                 'wordWrap',
             ].forEach((property) => {
-                mirroredEle.style[property] = textareaStyles[property];
+                overlayEle.style[property] = textareaStyles[property];
             });
-            mirroredEle.style.borderColor = 'transparent';
+            overlayEle.style.borderColor = 'transparent';
+            mirroredEle.style.padding = textareaStyles.padding;
 
             const parseValue = (v) => v.endsWith('px') ? parseInt(v.slice(0, -2), 10) : 0;
             const borderWidth = parseValue(textareaStyles.borderWidth);
 
             const ro = new ResizeObserver(() => {
-                mirroredEle.style.width = `${textarea.clientWidth + 2 * borderWidth}px`;
-                mirroredEle.style.height = `${textarea.clientHeight + 2 * borderWidth}px`;
+                overlayEle.style.width = `${textarea.clientWidth + 2 * borderWidth}px`;
+                overlayEle.style.height = `${textarea.clientHeight + 2 * borderWidth}px`;
             });
             ro.observe(textarea);
 
             textarea.addEventListener('scroll', () => {
-                mirroredEle.scrollTop = textarea.scrollTop;
+                overlayEle.scrollTop = textarea.scrollTop;
             });
+
+            const handleSelectionChange = () => {
+                if (document.activeElement !== textarea) {
+                    return;
+                }
+                const cursorPos = textarea.selectionStart;
+                const textBeforeCursor = textarea.value.substring(0, cursorPos);
+                const textAfterCursor = textarea.value.substring(cursorPos);
+
+                const pre = document.createTextNode(textBeforeCursor);
+                const post = document.createTextNode(textAfterCursor);
+                const caretEle = document.createElement('span');
+                caretEle.innerHTML = '&nbsp;';
+
+                mirroredEle.innerHTML = '';
+                mirroredEle.append(pre, caretEle, post);
+
+                const rect = caretEle.getBoundingClientRect();
+                highlightEle.style.height = `${rect.height}px`;
+                highlightEle.style.top = `${rect.top + textarea.scrollTop}px`;
+            };
+
+            document.addEventListener('selectionchange', handleSelectionChange);
         });
         </script>
     </body>
