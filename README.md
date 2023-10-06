@@ -49,3 +49,7 @@ This series introduces a technique to mirror a text area element. Instead of wor
 -   [12: Show a toolbar after selecting text in a text area](https://phuoc.ng/collection/mirror-a-text-area/show-a-toolbar-after-selecting-text-in-a-text-area/)
 
 ![Show a toolbar after selecting text in a text area](/12-toolbar-selected-text/toolbar-selected-text.png)
+
+-   [13: Copy the content of an element to your clipboard](https://phuoc.ng/collection/mirror-a-text-area/copy-the-content-of-an-element-to-your-clipboard/)
+
+![Copy the content of an element to your clipboard](/13-copy-to-clipboard/copy-to-clipboard.png)
