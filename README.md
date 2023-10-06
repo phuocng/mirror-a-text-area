@@ -45,3 +45,7 @@ This series introduces a technique to mirror a text area element. Instead of wor
 -   [11: Make a text area fit its content automatically](https://phuoc.ng/collection/mirror-a-text-area/make-a-text-area-fit-its-content-automatically/)
 
 ![Make a text area fit its content automatically](/11-fit-content/fit-content.png)
+
+-   [12: Show a toolbar after selecting text in a text area](https://phuoc.ng/collection/mirror-a-text-area/show-a-toolbar-after-selecting-text-in-a-text-area/)
+
+![Show a toolbar after selecting text in a text area](/12-toolbar-selected-text/toolbar-selected-text.png)
