@@ -1,0 +1,253 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta viewport="width=device-width, initial-scale=1.0">
+        <style>
+        body {
+            color: rgb(51 65 85);
+            font-family: sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        * {
+            box-sizing: border-box;
+        }        
+        .container {
+            position: relative;
+        }
+        .container__textarea {
+            background: transparent;
+            position: relative;
+        }
+        .container__mirror {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            color: transparent;
+        }
+        .container__suggestions {
+            border: 1px solid rgb(203 213 225);
+            background: #fff;
+            border-radius: 0.5rem;
+            display: none;
+            position: absolute;
+            width: 12rem;
+        }
+        .container__suggestion {
+            padding: 0.25rem 0.5rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .container__suggestion:not(:first-child) {
+            border-top: 1px solid rgb(203 213 225);
+        }
+        .container__suggestion--focused {
+            background: rgb(226 232 240);
+        }
+        </style>
+    </head>
+    <body>
+        <div class="container" id="container">
+            <textarea id="textarea" class="container__textarea"></textarea>
+        </div>
+        <script>
+        const suggestions = [
+            { symbol: '😀', name: 'Grinning Face' },
+            { symbol: '😃', name: 'Smiling Face with Open Mouth' },
+            { symbol: '😄', name: 'Smiling Face with Open Mouth and Smiling Eyes' },
+            { symbol: '😁', name: 'Grinning Face with Smiling Eyes' },
+            { symbol: '😆', name: 'Smiling Face with Open Mouth and Tightly-Closed Eyes' },
+            { symbol: '😅', name: 'Smiling Face with Open Mouth and Cold Sweat' },
+            { symbol: '🤣', name: 'Rolling On The Floor Laughing' },
+            { symbol: '😂', name: 'Face with Tears of Joy' },
+            { symbol: '🙂', name: 'Slightly Smiling Face' },
+            { symbol: '🙃', name: 'Upside-Down Face' },
+            { symbol: '😉', name: 'Winking Face' },
+            { symbol: '😊', name: 'Smiling Face with Smiling Eyes' },
+            { symbol: '😇', name: 'Smiling Face with Halo' },
+            { symbol: '🥰', name: 'Smiling Face with Smiling Eyes and Three Hearts' },
+            { symbol: '😍', name: 'Smiling Face with Heart-Shaped Eyes' },
+            { symbol: '🤩', name: 'Grinning Face With Star Eyes' },
+            { symbol: '😘', name: 'Face Throwing a Kiss' },
+            { symbol: '😗', name: 'Kissing Face' },
+            { symbol: '☺', name: 'White Smiling Face' },
+            { symbol: '😚', name: 'Kissing Face with Closed Eyes' },
+        ];
+    
+        document.addEventListener('DOMContentLoaded', () => {
+            const containerEle = document.getElementById('container');
+            const textarea = document.getElementById('textarea');
+        
+            const mirroredEle = document.createElement('div');
+            mirroredEle.textContent = textarea.value;
+            mirroredEle.classList.add('container__mirror');
+            containerEle.prepend(mirroredEle);
+        
+            const suggestionsEle = document.createElement('div');
+            suggestionsEle.classList.add('container__suggestions');
+            containerEle.appendChild(suggestionsEle);
+        
+            const textareaStyles = window.getComputedStyle(textarea);
+            [
+                'border',
+                'boxSizing',
+                'fontFamily',
+                'fontSize',
+                'fontWeight',
+                'letterSpacing',
+                'lineHeight',
+                'padding',
+                'textDecoration',
+                'textIndent',
+                'textTransform',
+                'whiteSpace',
+                'wordSpacing',
+                'wordWrap',
+            ].forEach((property) => {
+                mirroredEle.style[property] = textareaStyles[property];
+            });
+            mirroredEle.style.borderColor = 'transparent';
+        
+            const parseValue = (v) => v.endsWith('px') ? parseInt(v.slice(0, -2), 10) : 0;
+            const borderWidth = parseValue(textareaStyles.borderWidth);
+        
+            const ro = new ResizeObserver(() => {
+                mirroredEle.style.width = `${textarea.clientWidth + 2 * borderWidth}px`;
+                mirroredEle.style.height = `${textarea.clientHeight + 2 * borderWidth}px`;
+            });
+            ro.observe(textarea);
+        
+            textarea.addEventListener('scroll', () => {
+                mirroredEle.scrollTop = textarea.scrollTop;
+            });
+        
+            const findIndexOfCurrentWord = () => {
+                // Get current value and cursor position
+                const currentValue = textarea.value;
+                const cursorPos = textarea.selectionStart;
+        
+                // Iterate backwards through characters until we find a space or newline character
+                let startIndex = cursorPos - 1;
+                while (startIndex >= 0 && !/\s/.test(currentValue[startIndex])) {
+                    startIndex--;
+                }
+                return startIndex;
+            };
+        
+            // Replace current word with selected suggestion
+            const replaceCurrentWord = (newWord) => {
+                const currentValue = textarea.value;
+                const cursorPos = textarea.selectionStart;
+                const startIndex = findIndexOfCurrentWord();
+        
+                const newValue = currentValue.substring(0, startIndex + 1) +
+                                newWord +
+                                currentValue.substring(cursorPos);
+                textarea.value = newValue;
+                textarea.focus();
+                textarea.selectionStart = textarea.selectionEnd = startIndex + 1 + newWord.length;
+            };
+        
+            textarea.addEventListener('input', () => {
+                const currentValue = textarea.value;
+                const cursorPos = textarea.selectionStart;
+                const startIndex = findIndexOfCurrentWord();
+        
+                // Extract just the current word
+                const currentWord = currentValue.substring(startIndex + 1, cursorPos).toLowerCase();
+                if (currentWord === '' || !currentWord.startsWith(':')) {
+                    suggestionsEle.style.display = 'none';
+                    return;
+                }
+        
+                const searchFor = currentWord.slice(1);
+                const matches = suggestions.filter(
+                    (suggestion) => suggestion.name.toLowerCase().indexOf(searchFor) > -1
+                ).slice(0, 10);
+                if (matches.length === 0) {
+                    suggestionsEle.style.display = 'none';
+                    return;
+                }
+        
+                const textBeforeCursor = currentValue.substring(0, cursorPos);
+                const textAfterCursor = currentValue.substring(cursorPos);
+        
+                const pre = document.createTextNode(textBeforeCursor);
+                const post = document.createTextNode(textAfterCursor);
+                const caretEle = document.createElement('span');
+                caretEle.innerHTML = '&nbsp;';
+        
+                mirroredEle.innerHTML = '';
+                mirroredEle.append(pre, caretEle, post);
+        
+                const rect = caretEle.getBoundingClientRect();
+                suggestionsEle.style.top = `${rect.top + rect.height}px`;
+                suggestionsEle.style.left = `${rect.left}px`;
+        
+                suggestionsEle.innerHTML = '';
+                matches.forEach((match) => {
+                    const option = document.createElement('div');
+                    option.innerHTML = `${match.symbol} ${match.name}`;
+                    option.setAttribute('data-symbol', match.symbol);
+                    option.classList.add('container__suggestion');
+                    option.addEventListener('click', function() {
+                        replaceCurrentWord(this.getAttribute('data-symbol'));
+                        suggestionsEle.style.display = 'none';
+                    });
+                    suggestionsEle.appendChild(option);
+                });
+                suggestionsEle.style.display = 'block';
+            });
+        
+            const clamp = (min, value, max) => Math.min(Math.max(min, value), max);
+        
+            let currentSuggestionIndex = -1;
+            textarea.addEventListener('keydown', (e) => {
+                if (!['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
+                    return;
+                }
+        
+                const suggestions = suggestionsEle.querySelectorAll('.container__suggestion');
+                const numSuggestions = suggestions.length;
+                if (numSuggestions === 0 || suggestionsEle.style.display === 'none') {
+                    return;
+                }
+                e.preventDefault();
+                switch (e.key) {
+                    case 'ArrowDown':
+                        suggestions[
+                            clamp(0, currentSuggestionIndex, numSuggestions - 1)
+                        ].classList.remove('container__suggestion--focused');
+                        currentSuggestionIndex = clamp(0, currentSuggestionIndex + 1, numSuggestions - 1);
+                        suggestions[currentSuggestionIndex].classList.add('container__suggestion--focused');
+                        break;
+                    case 'ArrowUp':
+                        suggestions[
+                            clamp(0, currentSuggestionIndex, numSuggestions - 1)
+                        ].classList.remove('container__suggestion--focused');
+                        currentSuggestionIndex = clamp(0, currentSuggestionIndex - 1, numSuggestions - 1);
+                        suggestions[currentSuggestionIndex].classList.add('container__suggestion--focused');
+                        break;
+                    case 'Enter':
+                        replaceCurrentWord(suggestions[currentSuggestionIndex].getAttribute('data-symbol'));
+                        suggestionsEle.style.display = 'none';
+                        break;
+                    case 'Escape':
+                        suggestionsEle.style.display = 'none';
+                        break;
+                    default:
+                        break;
+                }
+            });
+        });
+        </script>
+    </body>
+</html>
