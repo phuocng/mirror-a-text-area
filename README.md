@@ -41,3 +41,7 @@ This series introduces a technique to mirror a text area element. Instead of wor
 -   [10: Provide a preview of the suggestion as users type in a text area](https://phuoc.ng/collection/mirror-a-text-area/provide-a-preview-of-the-suggestion-as-users-type-in-a-text-area/)
 
 ![Provide a preview of the suggestion as users type in a text area](/10-preview-suggestion/preview-suggestion.png)
+
+-   [11: Make a text area fit its content automatically](https://phuoc.ng/collection/mirror-a-text-area/make-a-text-area-fit-its-content-automatically/)
+
+![Make a text area fit its content automatically](/11-fit-content/fit-content.png)
