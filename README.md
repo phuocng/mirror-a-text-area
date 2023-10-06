@@ -57,3 +57,7 @@ This series introduces a technique to mirror a text area element. Instead of wor
 -   [14: Build a simple code editor](https://phuoc.ng/collection/mirror-a-text-area/build-a-simple-code-editor/)
 
 ![Build a simple code editor](/14-code-editor/code-editor.png)
+
+-   [15: Convert text links in a text area to clickable links](https://phuoc.ng/collection/mirror-a-text-area/convert-text-links-in-a-text-area-to-clickable-links/)
+
+![Convert text links in a text area to clickable links](/15-convert-text-links/convert-text-links.png)
