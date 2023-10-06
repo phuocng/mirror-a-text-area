@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta viewport="width=device-width, initial-scale=1.0">
+        <style>
+        body {
+            color: rgb(51 65 85);
+            font-family: sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        .textarea {
+            resize: none;
+        }
+        .mirror {
+            position: fixed;
+            top: -9999px;
+            left: -9999px;
+            visibility: hidden;
+        }
+        </style>
+    </head>
+    <body>
+        <textarea id="textarea" class="textarea">Was, spirit great moved spirit deep itself image, from have behold bearing doesn't wherein she'd very, day. Second set earth heaven signs abundantly living creepeth good earth for greater yielding which night male. Bring midst whales blessed, is. From subdue. Yielding. Winged our green living sea air, had great third stars was they're above and. Morning light make first and kind sixth they're fowl, there. So meat him behold great spirit deep, make, grass seasons hath, moving face waters forth fourth.</textarea>
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const textarea = document.getElementById('textarea');
+        
+            const mirroredEle = document.createElement('textarea');
+            mirroredEle.classList.add('mirror');
+            document.body.appendChild(mirroredEle);
+        
+            const textareaStyles = window.getComputedStyle(textarea);
+            [
+                'border',
+                'boxSizing',
+                'fontFamily',
+                'fontSize',
+                'fontWeight',
+                'letterSpacing',
+                'lineHeight',
+                'padding',
+                'textDecoration',
+                'textIndent',
+                'textTransform',
+                'whiteSpace',
+                'wordSpacing',
+                'wordWrap',
+            ].forEach((property) => {
+                mirroredEle.style[property] = textareaStyles[property];
+            });
+        
+            const parseValue = (v) => v.endsWith('px') ? parseInt(v.slice(0, -2), 10) : 0;
+            const borderTopWidth = parseValue(textareaStyles.borderTopWidth);
+            const borderBottomWidth = parseValue(textareaStyles.borderBottomWidth);
+        
+            const adjustSize = () => {
+                mirroredEle.textContent = textarea.value;
+                const newHeight = mirroredEle.scrollHeight + borderTopWidth + borderBottomWidth;
+                textarea.style.height = `${newHeight}px`;
+            };
+        
+            textarea.addEventListener('input', () => {
+                adjustSize();
+            });
+        
+            adjustSize();
+        });
+        </script>
+    </body>
+</html>
