@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta viewport="width=device-width, initial-scale=1.0">
+        <style>
+        body {
+            color: rgb(51 65 85);
+            font-family: sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        .mirror-textarea {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="target">So from green wherein brought tree two first land abundantly, saw beast hath sixth multiply forth midst make saw form seas beast can't earth. Fruitful forth grass image. Replenish years you're given. Fruitful fruit to seed moving good may given Seasons deep face. Have In lights earth. Fruit a. Evening shall very midst saw him every. Female. Years. Hath is brought, may good living rule you had Made it waters thing herb. First lights was isn't Rule green. Wherein doesn't stars life sixth, set whales that wherein shall great i beginning wherein, life bring you. Firmament female of female let.</div>
+        <p>
+            <button id="copy">Copy</button>
+        </p>
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const targetEle = document.getElementById('target');
+            const copyButton = document.getElementById('copy');
+        
+            copyButton.addEventListener('click', () => {
+                const mirroredTextarea = document.createElement('textarea');
+                mirroredTextarea.classList.add('mirrored-textarea');
+                document.body.appendChild(mirroredTextarea);
+        
+                mirroredTextarea.value = targetEle.innerHTML;
+                mirroredTextarea.select();
+                document.execCommand('copy');
+        
+                copyButton.innerHTML = 'Copied';
+                mirroredTextarea.remove();
+            });
+        });
+        </script>
+    </body>
+</html>
