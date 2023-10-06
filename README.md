@@ -4,40 +4,40 @@ We have been using text areas in many web applications. However, there are many 
 
 This series introduces a technique to mirror a text area element. Instead of working with the text area element directly, we create a copied element that look identical with the original text area. It's also placed at the same position as the text area. By doing this, we can enhance the user experience by allowing users to interact with the mirrored element in ways that were not possible with the original text area.
 
--   [Mirror a text area for improving user experience](https://phuoc.ng/collection/mirror-a-text-area/mirror-a-text-area-for-improving-user-experience/)
+-   [01: Mirror a text area for improving user experience](https://phuoc.ng/collection/mirror-a-text-area/mirror-a-text-area-for-improving-user-experience/)
 
--   [Highlight keywords in a text area](https://phuoc.ng/collection/mirror-a-text-area/highlight-keywords-in-a-text-area/)
+-   [02: Highlight keywords in a text area](https://phuoc.ng/collection/mirror-a-text-area/highlight-keywords-in-a-text-area/)
 
-![Highlight keywords in a text area](/highlight-keywords/highlight-keywords.png)
+![Highlight keywords in a text area](/02-highlight-keywords/highlight-keywords.png)
 
--   [Display the line numbers in a text area](https://phuoc.ng/collection/mirror-a-text-area/display-the-line-numbers-in-a-text-area/)
+-   [03: Display the line numbers in a text area](https://phuoc.ng/collection/mirror-a-text-area/display-the-line-numbers-in-a-text-area/)
 
-![Display the line numbers in a text area](/line-numbers/line-numbers.png)
+![Display the line numbers in a text area](/03-line-numbers/line-numbers.png)
 
--   [Calculate the coordinates of the current cursor in a text area](https://phuoc.ng/collection/mirror-a-text-area/calculate-the-coordinates-of-the-current-cursor-in-a-text-area/)
+-   [04: Calculate the coordinates of the current cursor in a text area](https://phuoc.ng/collection/mirror-a-text-area/calculate-the-coordinates-of-the-current-cursor-in-a-text-area/)
 
-![Calculate the coordinates of the current cursor in a text area](/cursor-coordinates/cursor-coordinates.png)
+![Calculate the coordinates of the current cursor in a text area](/04-cursor-coordinates/cursor-coordinates.png)
 
--   [Highlight the current line in a text area](https://phuoc.ng/collection/mirror-a-text-area/highlight-the-current-line-in-a-text-area/)
+-   [05: Highlight the current line in a text area](https://phuoc.ng/collection/mirror-a-text-area/highlight-the-current-line-in-a-text-area/)
 
-![Highlight the current line in a text area](/highlight-current-line/highlight-current-line.png)
+![Highlight the current line in a text area](/05-highlight-current-line/highlight-current-line.png)
 
--   [Create your own custom cursor in a text area](https://phuoc.ng/collection/mirror-a-text-area/create-your-own-custom-cursor-in-a-text-area/)
+-   [06: Create your own custom cursor in a text area](https://phuoc.ng/collection/mirror-a-text-area/create-your-own-custom-cursor-in-a-text-area/)
 
-![Create your own custom cursor in a text area](/custom-cursor/custom-cursor.png)
+![Create your own custom cursor in a text area](/06-custom-cursor/custom-cursor.png)
 
--   [Add autocomplete to your text area](https://phuoc.ng/collection/mirror-a-text-area/add-autocomplete-to-your-text-area/)
+-   [07: Add autocomplete to your text area](https://phuoc.ng/collection/mirror-a-text-area/add-autocomplete-to-your-text-area/)
 
-![Add autocomplete to your text area](/autocomplete/autocomplete.png)
+![Add autocomplete to your text area](/07-autocomplete/autocomplete.png)
 
--   [Insert emojis](https://phuoc.ng/collection/mirror-a-text-area/insert-emojis/)
+-   [08: Insert emojis](https://phuoc.ng/collection/mirror-a-text-area/insert-emojis/)
 
-![Insert emojis](/insert-emojis/insert-emojis.png)
+![Insert emojis](/08-insert-emojis/insert-emojis.png)
 
--   [Mention](https://phuoc.ng/collection/mirror-a-text-area/mention/)
+-   [09: Mention](https://phuoc.ng/collection/mirror-a-text-area/mention/)
 
-![Mention](/mention/mention.png)
+![Mention](/09-mention/mention.png)
 
--   [Provide a preview of the suggestion as users type in a text area](https://phuoc.ng/collection/mirror-a-text-area/provide-a-preview-of-the-suggestion-as-users-type-in-a-text-area/)
+-   [10: Provide a preview of the suggestion as users type in a text area](https://phuoc.ng/collection/mirror-a-text-area/provide-a-preview-of-the-suggestion-as-users-type-in-a-text-area/)
 
-![Provide a preview of the suggestion as users type in a text area](/preview-suggestion/preview-suggestion.png)
+![Provide a preview of the suggestion as users type in a text area](/10-preview-suggestion/preview-suggestion.png)
