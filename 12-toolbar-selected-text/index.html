@@ -1,0 +1,200 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta viewport="width=device-width, initial-scale=1.0">
+        <style>
+        body {
+            color: rgb(51 65 85);
+            font-family: sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        * {
+            box-sizing: border-box;
+        }      
+        .container {
+            position: relative;
+        }
+        .container__textarea {
+            background: transparent;
+            position: relative;
+        }
+        .container__overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            color: transparent;
+        }
+        .container__toolbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        
+            background: rgb(15 23 42);
+            border-radius: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            z-index: 1;
+        
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            height: 2rem;
+        }
+        .toolbar__button {
+            color: #fff;
+            padding: 0 0.25rem;
+        }
+        .toolbar__button path {
+            fill: none;
+            stroke: #fff;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 1;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="container" id="container">
+            <textarea id="textarea" class="container__textarea">Whales shall thing fifth fly had all called under unto face isn't saw gathered. Morning so fourth for gathered bring said. Light i. All third whales image yielding make created you'll years cattle.
+    
+Face lesser first one first after form itself after i thing for also he under called don't first all tree. Give. Were you let fill let him forth, there. Darkness saying, yielding upon beast.
+
+Light fill fish him. Be, there every seasons Divided of, upon, behold own sea female great.
+    
+Was fish let. Green deep. Male unto their. Can't fourth creepeth moving. Was saw gathered you're tree.</textarea>
+        </div>
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const containerEle = document.getElementById('container');
+            const textarea = document.getElementById('textarea');
+            const toolbarEle = document.getElementById('toolbar');
+        
+            const overlayEle = document.createElement('div');
+            overlayEle.classList.add('container__overlay');
+            containerEle.prepend(overlayEle);
+        
+            overlayEle.appendChild(toolbarEle);
+        
+            const mirroredEle = document.createElement('div');
+            mirroredEle.textContent = textarea.value;
+            mirroredEle.classList.add('container__mirror');
+            overlayEle.appendChild(mirroredEle);
+        
+            const textareaStyles = window.getComputedStyle(textarea);
+            [
+                'border',
+                'boxSizing',
+                'fontFamily',
+                'fontSize',
+                'fontWeight',
+                'letterSpacing',
+                'lineHeight',
+                'textDecoration',
+                'textIndent',
+                'textTransform',
+                'whiteSpace',
+                'wordSpacing',
+                'wordWrap',
+            ].forEach((property) => {
+                mirroredEle.style[property] = textareaStyles[property];
+            });
+            mirroredEle.style.borderColor = 'transparent';
+            mirroredEle.style.padding = textareaStyles.padding;
+        
+            const parseValue = (v) => v.endsWith('px') ? parseInt(v.slice(0, -2), 10) : 0;
+            const borderWidth = parseValue(textareaStyles.borderWidth);
+        
+            const ro = new ResizeObserver(() => {
+                overlayEle.style.width = `${textarea.clientWidth + 2 * borderWidth}px`;
+                overlayEle.style.height = `${textarea.clientHeight + 2 * borderWidth}px`;
+            });
+            ro.observe(textarea);
+        
+            textarea.addEventListener('scroll', () => {
+                overlayEle.scrollTop = textarea.scrollTop;
+            });
+        
+            const hideToolbar = () => {
+                toolbarEle.style.opacity = 0;
+                toolbarEle.style.visibility = 'hidden';
+            };
+        
+            const showToolbar = () => {
+                toolbarEle.style.opacity = 1;
+                toolbarEle.style.visibility = 'visible';
+            };
+        
+            document.addEventListener('selectionchange', () => {
+                const selection = window.getSelection().toString();
+                if (!selection) {
+                    hideToolbar();
+                }
+            });
+        
+            textarea.addEventListener('mouseup', () => {
+                const cursorPos = textarea.selectionStart;
+                const endSelection = textarea.selectionEnd;
+                if (cursorPos === endSelection) {
+                    return;
+                }
+                const textBeforeCursor = textarea.value.substring(0, cursorPos);
+                const textAfterCursor = textarea.value.substring(cursorPos);
+        
+                const pre = document.createTextNode(textBeforeCursor);
+                const post = document.createTextNode(textAfterCursor);
+                const caretEle = document.createElement('span');
+                caretEle.innerHTML = '&nbsp;';
+        
+                mirroredEle.innerHTML = '';
+                mirroredEle.append(pre, caretEle, post);
+        
+                const rect = caretEle.getBoundingClientRect();
+                const toolbarRect = toolbarEle.getBoundingClientRect();
+                const left = (textarea.clientWidth - toolbarRect.width) / 2;
+                const top = rect.top + textarea.scrollTop - toolbarRect.height - 8;
+                toolbarEle.style.transform = `translate(${left}px, ${top}px)`;
+                showToolbar();
+            });
+        
+            [...toolbarEle.querySelectorAll('.toolbar__button')].forEach((button) => {
+                button.addEventListener('click', (e) => {
+                    const format = button.getAttribute('data-format');
+                    const start = textarea.selectionStart;
+                    const end = textarea.selectionEnd;
+                    const currentValue = textarea.value;
+        
+                    switch (format) {
+                        case 'bold':
+                            textarea.setRangeText(`**${currentValue.slice(start, end)}**`, start, end);
+                            textarea.focus();
+                            textarea.selectionStart = end + 4;
+                            break;
+                        case 'italic':
+                            textarea.setRangeText(`*${currentValue.slice(start, end)}*`, start, end);
+                            textarea.focus();
+                            textarea.selectionStart = end + 2;
+                            break;
+                        case 'strike':
+                            textarea.setRangeText(`~~${currentValue.slice(start, end)}~~`, start, end);
+                            textarea.focus();
+                            textarea.selectionStart = end + 4;
+                            break;
+                        default:
+                            break;
+                    }
+        
+                    hideToolbar();
+                });
+            });
+        });
+        </script>
+    </body>
+</html>
