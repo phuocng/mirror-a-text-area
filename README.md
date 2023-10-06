@@ -34,6 +34,10 @@ This series introduces a technique to mirror a text area element. Instead of wor
 
 ![Insert emojis](/insert-emojis/insert-emojis.png)
 
+-   [Mention](https://phuoc.ng/collection/mirror-a-text-area/mention/)
+
+![Mention](/mention/mention.png)
+
 -   [Provide a preview of the suggestion as users type in a text area](https://phuoc.ng/collection/mirror-a-text-area/provide-a-preview-of-the-suggestion-as-users-type-in-a-text-area/)
 
 ![Provide a preview of the suggestion as users type in a text area](/preview-suggestion/preview-suggestion.png)
