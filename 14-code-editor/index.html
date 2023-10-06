@@ -1,0 +1,131 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta viewport="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/prismjs@1.29.0/themes/prism.min.css">
+        <style>
+        body {
+            color: rgb(51 65 85);
+            font-family: sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        .container {
+            position: relative;
+        }
+        .container__textarea {
+            background: transparent;
+            position: relative;
+            -webkit-text-fill-color: transparent;
+        }
+        .container__mirror {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        
+            margin: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="container" id="container">
+            <textarea id="textarea" class="container__textarea" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false">const containerEle = document.getElementById('container');
+const textarea = document.getElementById('textarea');
+
+const mirroredEle = document.createElement('pre');
+mirroredEle.textContent = textarea.value;
+mirroredEle.classList.add('container__mirror');
+containerEle.appendChild(mirroredEle);
+
+const textareaStyles = window.getComputedStyle(textarea);
+[
+    'border',
+    'boxSizing',
+    'fontFamily',
+    'fontSize',
+    'fontWeight',
+    'letterSpacing',
+    'lineHeight',
+    'padding',
+    'textDecoration',
+    'textIndent',
+    'textTransform',
+    'whiteSpace',
+    'wordSpacing',
+    'wordWrap',
+].forEach((property) =&gt; {
+    mirroredEle.style[property] = textareaStyles[property];
+});
+    mirroredEle.style.borderColor = 'transparent';</textarea>
+        </div>
+        
+        <script src="https://unpkg.com/prismjs@1.29.0/prism.js"></script>
+        <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const containerEle = document.getElementById('container');
+            const textarea = document.getElementById('textarea');
+        
+            const mirroredEle = document.createElement('pre');
+            mirroredEle.textContent = textarea.value;
+            mirroredEle.classList.add('container__mirror');
+            containerEle.appendChild(mirroredEle);
+        
+            const textareaStyles = window.getComputedStyle(textarea);
+            [
+                'border',
+                'boxSizing',
+                'fontFamily',
+                'fontSize',
+                'fontWeight',
+                'letterSpacing',
+                'lineHeight',
+                'padding',
+                'textDecoration',
+                'textIndent',
+                'textTransform',
+                'whiteSpace',
+                'wordSpacing',
+                'wordWrap',
+            ].forEach((property) => {
+                mirroredEle.style[property] = textareaStyles[property];
+            });
+            mirroredEle.style.borderColor = 'transparent';
+        
+            const parseValue = (v) => v.endsWith('px') ? parseInt(v.slice(0, -2), 10) : 0;
+            const borderWidth = parseValue(textareaStyles.borderWidth);
+        
+            const ro = new ResizeObserver(() => {
+                mirroredEle.style.width = `${textarea.clientWidth + 2 * borderWidth}px`;
+                mirroredEle.style.height = `${textarea.clientHeight + 2 * borderWidth}px`;
+            });
+            ro.observe(textarea);
+        
+            textarea.addEventListener('scroll', () => {
+                mirroredEle.scrollTop = textarea.scrollTop;
+            });
+        
+            const highlight = () => {
+                mirroredEle.innerHTML = Prism.highlight(textarea.value, Prism.languages.javascript, 'javascript');
+            };
+        
+            textarea.addEventListener('input', () => {
+                highlight();
+            });
+        
+            highlight();
+        });
+        </script>
+    </body>
+</html>

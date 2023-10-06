@@ -53,3 +53,7 @@ This series introduces a technique to mirror a text area element. Instead of wor
 -   [13: Copy the content of an element to your clipboard](https://phuoc.ng/collection/mirror-a-text-area/copy-the-content-of-an-element-to-your-clipboard/)
 
 ![Copy the content of an element to your clipboard](/13-copy-to-clipboard/copy-to-clipboard.png)
+
+-   [14: Build a simple code editor](https://phuoc.ng/collection/mirror-a-text-area/build-a-simple-code-editor/)
+
+![Build a simple code editor](/14-code-editor/code-editor.png)
