@@ -42,22 +42,26 @@ This series introduces a technique to mirror a text area element. Instead of wor
 
 ![Provide a preview of the suggestion as users type in a text area](/10-preview-suggestion/preview-suggestion.png)
 
--   [11: Make a text area fit its content automatically](https://phuoc.ng/collection/mirror-a-text-area/make-a-text-area-fit-its-content-automatically/)
+-   [11: Implement inline input suggestions](https://phuoc.ng/collection/mirror-a-text-area/implement-inline-input-suggestions/)
 
-![Make a text area fit its content automatically](/11-fit-content/fit-content.png)
+![Implement inline input suggestions](/11-inline-input-suggestions/inline-input-suggestions.png)
 
--   [12: Show a toolbar after selecting text in a text area](https://phuoc.ng/collection/mirror-a-text-area/show-a-toolbar-after-selecting-text-in-a-text-area/)
+-   [12: Make a text area fit its content automatically](https://phuoc.ng/collection/mirror-a-text-area/make-a-text-area-fit-its-content-automatically/)
 
-![Show a toolbar after selecting text in a text area](/12-toolbar-selected-text/toolbar-selected-text.png)
+![Make a text area fit its content automatically](/12-fit-content/fit-content.png)
 
--   [13: Copy the content of an element to your clipboard](https://phuoc.ng/collection/mirror-a-text-area/copy-the-content-of-an-element-to-your-clipboard/)
+-   [13: Show a toolbar after selecting text in a text area](https://phuoc.ng/collection/mirror-a-text-area/show-a-toolbar-after-selecting-text-in-a-text-area/)
 
-![Copy the content of an element to your clipboard](/13-copy-to-clipboard/copy-to-clipboard.png)
+![Show a toolbar after selecting text in a text area](/13-toolbar-selected-text/toolbar-selected-text.png)
 
--   [14: Build a simple code editor](https://phuoc.ng/collection/mirror-a-text-area/build-a-simple-code-editor/)
+-   [14: Copy the content of an element to your clipboard](https://phuoc.ng/collection/mirror-a-text-area/copy-the-content-of-an-element-to-your-clipboard/)
 
-![Build a simple code editor](/14-code-editor/code-editor.png)
+![Copy the content of an element to your clipboard](/14-copy-to-clipboard/copy-to-clipboard.png)
 
--   [15: Convert text links in a text area to clickable links](https://phuoc.ng/collection/mirror-a-text-area/convert-text-links-in-a-text-area-to-clickable-links/)
+-   [15: Build a simple code editor](https://phuoc.ng/collection/mirror-a-text-area/build-a-simple-code-editor/)
 
-![Convert text links in a text area to clickable links](/15-convert-text-links/convert-text-links.png)
+![Build a simple code editor](/15-code-editor/code-editor.png)
+
+-   [16: Convert text links in a text area to clickable links](https://phuoc.ng/collection/mirror-a-text-area/convert-text-links-in-a-text-area-to-clickable-links/)
+
+![Convert text links in a text area to clickable links](/16-convert-text-links/convert-text-links.png)
